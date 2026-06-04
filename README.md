@@ -1,1 +1,1 @@
-[# yukji](https://seminarnotes.github.io/yukji)
+[# Click](https://seminarnotes.github.io/yukji)
