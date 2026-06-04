@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yukgi 🐢</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ── HEADER ── -->
+  <header>
+    <p class="header-deco">tortoise diary</p>
+    <h1>육지거북 <em>육기</em>의 일상</h1>
+    <p class="header-sub">작고 느리지만, 하루하루 무럭무럭 🌿</p>
+  </header>
+
+  <div class="divider"><span>🍃</span></div>
+
+  <!-- ── 1. PROFILE CARD ── -->
+  <div class="card profile-card">
+
+    <!-- 프로필 사진: profile.jpg 를 assets/ 폴더에 넣으면 자동 표시 -->
+    <!-- 사진이 없을 경우 이모지 플레이스홀더 표시 -->
+    <div class="profile-photo-wrap">
+      <div class="profile-photo-ring">
+        <img id="profileImg"
+             src="assets/profile.jpg"
+             alt="육기 프로필 사진"
+             onerror="this.style.display='none'; document.getElementById('profilePlaceholder').style.display='flex';" />
+        <div id="profilePlaceholder" class="profile-photo-placeholder" style="display:none;">
+          🐢<span>photo here</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="profile-name">육기</p>
+    <p class="profile-species">Testudo graeca · 그리스 육지거북</p>
+
+    <div class="profile-grid">
+      <div class="info-item">
+        <span class="info-label">성별</span>
+        <span class="info-value">🐢 미확인</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">추정 생년</span>
+        <span class="info-value">2025년</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">입양일</span>
+        <span class="info-value">2026. 03. 12.</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">현재 몸무게</span>
+        <span class="info-value" id="currentWeight">— g</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">먹이</span>
+        <span class="info-value">상추 · 민들레 · 펠렛</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">사육 환경</span>
+        <span class="info-value">실내 테라리움</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 2. WEIGHT CHART CARD ── -->
+  <div class="card">
+    <p class="card-title">🌱 몸무게 변화</p>
+    <div class="chart-container">
+      <canvas id="weightChart"></canvas>
+    </div>
+    <p class="chart-note" id="chartNote">데이터 불러오는 중…</p>
+  </div>
+
+  <!-- ── 3. HISTORY CARD ── -->
+  <div class="card">
+    <p class="card-title">📖 History</p>
+    <ul class="history-list">
+
+      <li class="history-item">
+        <span class="history-date">26.03.12.</span>
+        <div class="history-content">
+          <span class="history-tag tag-adoption">입양</span>
+          <p class="history-text">육기를 처음 만난 날. 44g의 작은 몸으로 우리 집에 왔다.</p>
+        </div>
+      </li>
+
+      <li class="history-item">
+        <span class="history-date">26.03.20.</span>
+        <div class="history-content">
+          <span class="history-tag tag-vet">병원</span>
+          <p class="history-text">입양 후 첫 건강 검진. 건강 상태 양호 확인.</p>
+        </div>
+      </li>
+
+      <li class="history-item">
+        <span class="history-date">26.04.10.</span>
+        <div class="history-content">
+          <span class="history-tag tag-milestone">성장</span>
+          <p class="history-text">입양 한 달, 59g 달성! 첫 목욕도 성공적으로 마쳤다.</p>
+        </div>
+      </li>
+
+      <li class="history-item">
+        <span class="history-date">26.05.10.</span>
+        <div class="history-content">
+          <span class="history-tag tag-milestone">성장</span>
+          <p class="history-text">75g 돌파. 상추를 특히 좋아한다는 걸 알게 됐다.</p>
+        </div>
+      </li>
+
+      <li class="history-item">
+        <span class="history-date">26.06.04.</span>
+        <div class="history-content">
+          <span class="history-tag tag-daily">일상</span>
+          <p class="history-text">86g. 입양 이후 꾸준히 성장 중 🌿</p>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <p>made with 🐢 love</p>
+  </footer>
+
+</div><!-- /.page -->
+
+<!-- ── CHART SCRIPT ── -->
+<script>
+(async () => {
+  // ── CSV 파싱 ──────────────────────────────────────────────────────
+  // 형식: date(yy.mm.dd.),weight(g)
+  //       26.03.12.,44
+  function parseCSV(text) {
+    const lines = text.trim().split('\n').slice(1); // 헤더 제거
+    const labels = [], values = [];
+    for (const line of lines) {
+      const parts = line.split(',');
+      if (parts.length < 2) continue;
+      const rawDate = parts[0].trim();   // e.g. "26.03.12."
+      const weight  = parseFloat(parts[1].trim());
+      if (!rawDate || isNaN(weight)) continue;
+
+      // "26.03.12." → "26년 3월 12일" 표시용
+      const [yy, mm, dd] = rawDate.replace(/\.$/, '').split('.');
+      labels.push(`'${yy}.${mm}.${dd}`);
+      values.push(weight);
+    }
+    return { labels, values };
+  }
+
+  // ── CSV 로드 ──────────────────────────────────────────────────────
+  let labels = [], values = [];
+  try {
+    const res  = await fetch('assets/weight.csv');
+    const text = await res.text();
+    ({ labels, values } = parseCSV(text));
+  } catch (e) {
+    // fetch 실패 시 (로컬 file:// 프로토콜 등) 샘플 데이터로 대체
+    labels = ["'26.03.12","'26.03.16","'26.03.19","'26.03.21","'26.03.24",
+              "'26.03.31","'26.04.01","'26.04.06","'26.04.07","'26.04.10",
+              "'26.04.13","'26.04.16","'26.04.19","'26.04.27","'26.05.02",
+              "'26.05.10","'26.05.17","'26.05.21","'26.05.26","'26.06.04"];
+    values = [44,46,46,47,48,53,53,55,57,59,57,56,63,65,70,75,79,84,82,86];
+  }
+
+  // ── 현재 몸무게 표시 ──────────────────────────────────────────────
+  if (values.length > 0) {
+    document.getElementById('currentWeight').textContent =
+      values[values.length - 1] + ' g';
+  }
+
+  // ── Chart.js 렌더링 ───────────────────────────────────────────────
+  const ctx = document.getElementById('weightChart').getContext('2d');
+
+  // 그라디언트 fill
+  const gradient = ctx.createLinearGradient(0, 0, 0, 220);
+  gradient.addColorStop(0,   'rgba(90, 110, 63, 0.22)');
+  gradient.addColorStop(1,   'rgba(90, 110, 63, 0.00)');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        borderColor:     '#5a6e3f',
+        backgroundColor: gradient,
+        borderWidth:     2.2,
+        pointRadius:     4,
+        pointHoverRadius: 6,
+        pointBackgroundColor: '#c9973a',
+        pointBorderColor:     '#fff',
+        pointBorderWidth:     2,
+        tension: 0.42,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(44, 36, 22, 0.88)',
+          titleFont:  { family: 'Lora', size: 11 },
+          bodyFont:   { family: 'Lora', size: 13 },
+          padding: 10,
+          callbacks: {
+            label: ctx => `  ${ctx.parsed.y} g`
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            font:      { family: 'Noto Sans KR', size: 10 },
+            color:     '#8b7a5a',
+            maxRotation: 45,
+            maxTicksLimit: 8,
+          },
+          grid: { display: false },
+          border: { color: 'rgba(212,197,160,0.4)' }
+        },
+        y: {
+          ticks: {
+            font:      { family: 'Lora', size: 11 },
+            color:     '#8b7a5a',
+            callback:  v => v + 'g',
+          },
+          grid: { color: 'rgba(212,197,160,0.3)', lineWidth: 1 },
+          border: { display: false }
+        }
+      }
+    }
+  });
+
+  // 마지막 업데이트 날짜 표시
+  if (labels.length > 0) {
+    document.getElementById('chartNote').textContent =
+      `최근 기록: ${labels[labels.length - 1].replace(/'/,'')} · ${values.length}회 측정`;
+  }
+})();
+</script>
+
+</body>
+</html>
