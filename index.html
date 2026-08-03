@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>육지육지 · 김육지 & 김체리 🐢</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<!-- data-theme 은 JS 가 탭에 맞춰 yukji / cherry 로 바꿉니다 -->
+<body data-theme="yukji">
+
+<div class="page">
+
+  <!-- ── HEADER ── -->
+  <header>
+    <p class="header-deco">tortoise diary</p>
+    <h1>육지육지 <em>가족</em> 의 일상</h1>
+    <p class="header-sub">작고 느리지만, 하루하루 무럭무럭 🌿</p>
+
+    <!-- ── TAB BAR : 거북이 선택 ── -->
+    <nav class="tabs" role="tablist" aria-label="거북이 선택">
+      <button class="tab tab-yukji active" data-tort="yukji"
+              role="tab" aria-selected="true">🐢 김육지</button>
+      <button class="tab tab-cherry" data-tort="cherry"
+              role="tab" aria-selected="false">🐢 김체리</button>
+    </nav>
+  </header>
+
+  <div class="divider"><span>🍃</span></div>
+
+  <!-- ══════════════════════════════════════════
+       PANEL 1 · 김육지 (Testudo marginata)
+       ══════════════════════════════════════════ -->
+  <section class="tort-panel active" data-panel="yukji" role="tabpanel">
+
+    <!-- 1. PROFILE -->
+    <div class="card profile-card">
+      <div class="profile-photo-wrap">
+        <div class="profile-photo-ring">
+          <!-- 프로필 사진: assets/profile_yukji.jpg -->
+          <img src="assets/profile_yukji.jpg" alt="김육지 프로필 사진"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          <div class="profile-photo-placeholder" style="display:none;">
+            🐢<span>photo here</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="profile-name" data-field="name">김육지</p>
+      <p class="profile-species" data-field="species">Testudo marginata · 드워프 마지나타 육지거북</p>
+
+      <div class="profile-grid">
+        <div class="info-item">
+          <span class="info-label">성별</span>
+          <span class="info-value" data-field="sex">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">추정 생년</span>
+          <span class="info-value" data-field="birth">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">입양일</span>
+          <span class="info-value" data-field="adoption">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">현재 몸무게</span>
+          <span class="info-value" data-field="currentWeight">— g</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">먹이</span>
+          <span class="info-value" data-field="food">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">사육 환경</span>
+          <span class="info-value" data-field="environment">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. WEIGHT CHART -->
+    <div class="card">
+      <p class="card-title">🌱 몸무게 변화</p>
+      <div class="chart-container">
+        <canvas data-field="chart"></canvas>
+      </div>
+      <p class="chart-note" data-field="chartNote">데이터 불러오는 중…</p>
+    </div>
+
+    <!-- 3. HISTORY  (직접 편집: 항목을 복사해 날짜/태그/내용만 바꾸세요) -->
+    <div class="card">
+      <p class="card-title">📖 히스토리</p>
+      <ul class="history-list">
+        <li class="history-item">
+          <span class="history-date">26.02.01.</span>
+          <div class="history-content">
+            <span class="history-tag tag-adoption">입양</span>
+            <p class="history-text">육지를 처음 만난 날. 쪼마난 친구가 우리 집에 왔다.</p>
+          </div>
+        </li>
+        <li class="history-item">
+          <span class="history-date">26.03.14.</span>
+          <div class="history-content">
+            <span class="history-tag tag-milestone">청소</span>
+            <p class="history-text">바닥제를 교체/청소 후, 적응을 못했다. 아욱을 별로 안좋아한다</p>
+          </div>
+        </li>
+        <li class="history-item">
+          <span class="history-date">26.03.31.</span>
+          <div class="history-content">
+            <span class="history-tag tag-milestone">성장</span>
+            <p class="history-text">50g 돌파. 무럭무럭</p>
+          </div>
+        </li>
+        <li class="history-item">
+          <span class="history-date">26.07.02.</span>
+          <div class="history-content">
+            <span class="history-tag tag-daily">성장</span>
+            <p class="history-text">100g 돌파. 무럭무럭</p>
+          </div>
+        </li>
+        <li class="history-item">
+          <span class="history-date">26.07.13.</span>
+          <div class="history-content">
+            <span class="history-tag tag-daily">호텔링</span>
+            <p class="history-text">해외 출장으로 일주일(13-19) 간 호텔링</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 4. GALLERY  (사진은 assets/ 에 넣고 gallery_yukji.csv 에 한 줄 추가) -->
+    <div class="card">
+      <p class="card-title">📷 갤러리</p>
+      <div class="gallery-grid" data-field="gallery">
+        <p class="gallery-empty">갤러리 불러오는 중…</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       PANEL 2 · 김체리 (Chelonoidis carbonarius)
+       ══════════════════════════════════════════ -->
+  <section class="tort-panel" data-panel="cherry" role="tabpanel">
+
+    <!-- 1. PROFILE -->
+    <div class="card profile-card">
+      <div class="profile-photo-wrap">
+        <div class="profile-photo-ring">
+          <!-- 프로필 사진: assets/profile_cherry.jpg -->
+          <img src="assets/profile_cherry.jpg" alt="김체리 프로필 사진"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          <div class="profile-photo-placeholder" style="display:none;">
+            🐢<span>photo here</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="profile-name" data-field="name">김체리</p>
+      <p class="profile-species" data-field="species">Chelonoidis carbonarius · 체리헤드 레드풋</p>
+
+      <div class="profile-grid">
+        <div class="info-item">
+          <span class="info-label">성별</span>
+          <span class="info-value" data-field="sex">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">추정 생년</span>
+          <span class="info-value" data-field="birth">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">입양일</span>
+          <span class="info-value" data-field="adoption">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">현재 몸무게</span>
+          <span class="info-value" data-field="currentWeight">— g</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">먹이</span>
+          <span class="info-value" data-field="food">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">사육 환경</span>
+          <span class="info-value" data-field="environment">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. WEIGHT CHART -->
+    <div class="card">
+      <p class="card-title">🌱 몸무게 변화</p>
+      <div class="chart-container">
+        <canvas data-field="chart"></canvas>
+      </div>
+      <p class="chart-note" data-field="chartNote">데이터 불러오는 중…</p>
+    </div>
+
+    <!-- 3. HISTORY  (직접 편집) -->
+    <div class="card">
+      <p class="card-title">📖 히스토리</p>
+      <ul class="history-list">
+        <li class="history-item">
+          <span class="history-date">26.XX.XX.</span>
+          <div class="history-content">
+            <span class="history-tag tag-adoption">입양</span>
+            <p class="history-text">체리를 처음 만난 날. (날짜와 내용을 채워주세요)</p>
+          </div>
+        </li>
+        <!-- 항목 추가 예시 — 위 li 를 복사해서 붙여넣고 내용만 수정하세요
+        <li class="history-item">
+          <span class="history-date">26.XX.XX.</span>
+          <div class="history-content">
+            <span class="history-tag tag-milestone">성장</span>
+            <p class="history-text">내용</p>
+          </div>
+        </li>
+        -->
+      </ul>
+    </div>
+
+    <!-- 4. GALLERY -->
+    <div class="card">
+      <p class="card-title">📷 갤러리</p>
+      <div class="gallery-grid" data-field="gallery">
+        <p class="gallery-empty">갤러리 불러오는 중…</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <p>made with 🐢 love</p>
+  </footer>
+
+</div><!-- /.page -->
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     SCRIPT
+     ══════════════════════════════════════════════════════════════ -->
+<script>
+(() => {
+  /* ── 거북이별 설정 ─────────────────────────────────────────────
+     theme   : Chart.js 선/점/채움 색 (CSS accent 색과 맞춤)
+     defaults: fetch 실패(file:// 등) 시 보여줄 대체 데이터            */
+  const CONFIG = {
+    yukji: {
+      theme: { line: '#7a5f38', point: '#d4a02f',
+               fillTop: 'rgba(122,95,56,0.22)', fillBot: 'rgba(122,95,56,0.00)' },
+      defaults: {
+        profile: {
+          name: '김육지',
+          species: 'Testudo marginata · 드워프 마지나타 육지거북',
+          sex: '🐢 미확인', birth: '2025. 08. XX.', adoption: '2026. 02. 01.',
+          food: '치커리 · 로메인 · 아욱', environment: '실내 사육장(28~32℃)'
+        },
+        weight: {
+          labels: ["'26.03.12","'26.03.31","'26.04.19","'26.05.02",
+                   "'26.05.17","'26.06.04","'26.07.02"],
+          values: [44, 53, 63, 70, 79, 86, 100]
+        }
+      }
+    },
+    cherry: {
+      theme: { line: '#8f2d2d', point: '#b34a34',
+               fillTop: 'rgba(143,45,45,0.20)', fillBot: 'rgba(143,45,45,0.00)' },
+      defaults: {
+        profile: {
+          name: '김체리',
+          species: 'Chelonoidis carbonarius · 체리헤드 레드풋',
+          sex: '🐢 미확인', birth: '2026. XX. XX.', adoption: '2026. XX. XX.',
+          food: '민들레 · 청경채 · 과일 · 단백질(주1회)',
+          environment: '실내 밀폐 사육장(28~30℃ · 습도 70~80%)'
+        },
+        weight: { labels: [], values: [] }
+      }
+    }
+  };
+
+  const state = {};   // { yukji: {weight, chart}, cherry: {...} }
+
+  /* ── CSV 파서 ─────────────────────────────────────────────── */
+
+  // 몸무게 CSV : "date,weight" (헤더 1줄)  e.g.  26.03.12.,44
+  function parseWeightCSV(text) {
+    const labels = [], values = [];
+    text.trim().split('\n').slice(1).forEach(line => {
+      const [rawDate, rawW] = line.split(',');
+      if (!rawDate) return;
+      const w = parseFloat((rawW || '').trim());
+      if (isNaN(w)) return;
+      const [yy, mm, dd] = rawDate.trim().replace(/\.$/, '').split('.');
+      labels.push(`'${yy}.${mm}.${dd}`);
+      values.push(w);
+    });
+    return { labels, values };
+  }
+
+  // 프로필 CSV : "field,value" (헤더 1줄). 값에 콤마가 있어도 첫 콤마만 기준.
+  function parseKVCSV(text) {
+    const out = {};
+    text.trim().split('\n').slice(1).forEach(line => {
+      const i = line.indexOf(',');
+      if (i < 0) return;
+      const key = line.slice(0, i).trim();
+      const val = line.slice(i + 1).trim().replace(/^"|"$/g, '');
+      if (key) out[key] = val;
+    });
+    return out;
+  }
+
+  // 갤러리 CSV : "filename,title" (헤더 1줄).  e.g.  cherry_01.jpg,첫 목욕
+  function parseGalleryCSV(text) {
+    const items = [];
+    text.trim().split('\n').slice(1).forEach(line => {
+      const i = line.indexOf(',');
+      const filename = (i < 0 ? line : line.slice(0, i)).trim();
+      const title    = (i < 0 ? '' : line.slice(i + 1).trim().replace(/^"|"$/g, ''));
+      if (filename) items.push({ filename, title });
+    });
+    return items;
+  }
+
+  async function fetchText(path) {
+    try {
+      const res = await fetch(path);
+      if (!res.ok) return null;
+      return await res.text();
+    } catch (e) { return null; }   // file:// 등에서 실패 → null
+  }
+
+  const panelOf = key => document.querySelector(`.tort-panel[data-panel="${key}"]`);
+
+  /* ── 프로필 채우기 ─────────────────────────────────────────── */
+  function fillProfile(key, profile) {
+    const panel = panelOf(key);
+    ['name','species','sex','birth','adoption','food','environment'].forEach(f => {
+      const el = panel.querySelector(`[data-field="${f}"]`);
+      if (el && profile[f] != null && profile[f] !== '') el.textContent = profile[f];
+    });
+  }
+
+  /* ── 갤러리 렌더 ───────────────────────────────────────────── */
+  function renderGallery(key, items) {
+    const grid = panelOf(key).querySelector('[data-field="gallery"]');
+    grid.innerHTML = '';
+    if (!items.length) {
+      grid.innerHTML =
+        `<p class="gallery-empty">아직 사진이 없어요. assets/ 에 사진을 넣고
+         gallery_${key}.csv 에 <b>파일명,제목</b> 을 추가하면 여기 나타나요 🐢</p>`;
+      return;
+    }
+    items.forEach(({ filename, title }) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.innerHTML = `
+        <div class="gallery-photo-ring">
+          <img class="gallery-photo" src="assets/${filename}" alt="${title || filename}"
+               onerror="this.closest('.gallery-item').style.display='none';" />
+        </div>
+        <p class="gallery-caption">${title || ''}</p>`;
+      grid.appendChild(item);
+    });
+  }
+
+  /* ── 차트 렌더 (패널이 보일 때 호출: display:none 상태면 크기 0 버그) ── */
+  function renderChart(key) {
+    const st = state[key];
+    if (!st || st.chart) return;                 // 이미 그렸으면 skip
+    const panel = panelOf(key);
+    const canvas = panel.querySelector('[data-field="chart"]');
+    const noteEl = panel.querySelector('[data-field="chartNote"]');
+    const { labels, values } = st.weight;
+    const t = CONFIG[key].theme;
+
+    const ctx = canvas.getContext('2d');
+    const grad = ctx.createLinearGradient(0, 0, 0, 220);
+    grad.addColorStop(0, t.fillTop);
+    grad.addColorStop(1, t.fillBot);
+
+    st.chart = new Chart(ctx, {
+      type: 'line',
+      data: { labels, datasets: [{
+        data: values,
+        borderColor: t.line, backgroundColor: grad,
+        borderWidth: 2.2, pointRadius: 4, pointHoverRadius: 6,
+        pointBackgroundColor: t.point, pointBorderColor: '#fff', pointBorderWidth: 2,
+        tension: 0.42, fill: true,
+      }]},
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(44,36,22,0.88)',
+            titleFont: { family: 'Lora', size: 11 },
+            bodyFont:  { family: 'Lora', size: 13 },
+            padding: 10,
+            callbacks: { label: c => `  ${c.parsed.y} g` }
+          }
+        },
+        scales: {
+          x: { ticks: { font: { family: 'Noto Sans KR', size: 10 }, color: '#8b7a5a',
+                        maxRotation: 45, maxTicksLimit: 8 },
+               grid: { display: false }, border: { color: 'rgba(212,197,160,0.4)' } },
+          y: { ticks: { font: { family: 'Lora', size: 11 }, color: '#8b7a5a',
+                        callback: v => v + 'g' },
+               grid: { color: 'rgba(212,197,160,0.3)', lineWidth: 1 },
+               border: { display: false } }
+        }
+      }
+    });
+
+    if (labels.length) {
+      noteEl.textContent =
+        `최근 기록: ${labels[labels.length - 1].replace(/'/, '')} · ${values.length}회 측정`;
+    }
+  }
+
+  /* ── 데이터 로드 (차트 렌더는 제외 — 안전하게 언제든 호출 가능) ── */
+  async function loadData(key) {
+    const def = CONFIG[key].defaults;
+
+    // 프로필
+    const pTxt = await fetchText(`assets/profile_${key}.csv`);
+    const profile = pTxt ? { ...def.profile, ...parseKVCSV(pTxt) } : def.profile;
+    fillProfile(key, profile);
+
+    // 몸무게
+    const wTxt = await fetchText(`assets/weight_${key}.csv`);
+    const weight = wTxt ? parseWeightCSV(wTxt) : def.weight;
+    state[key] = { weight, chart: null };
+
+    // 현재 몸무게 (프로필 카드)
+    const cur = panelOf(key).querySelector('[data-field="currentWeight"]');
+    if (weight.values.length) cur.textContent = weight.values[weight.values.length - 1] + ' g';
+
+    // 갤러리
+    const gTxt = await fetchText(`assets/gallery_${key}.csv`);
+    renderGallery(key, gTxt ? parseGalleryCSV(gTxt) : []);
+  }
+
+  /* ── 탭 전환 ───────────────────────────────────────────────── */
+  function activate(key) {
+    document.querySelectorAll('.tab').forEach(t => {
+      const on = t.dataset.tort === key;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('.tort-panel').forEach(p =>
+      p.classList.toggle('active', p.dataset.panel === key));
+    document.body.dataset.theme = key;
+    renderChart(key);                 // 이제 보이므로 안전하게 그림
+  }
+
+  document.querySelectorAll('.tab').forEach(tab =>
+    tab.addEventListener('click', () => activate(tab.dataset.tort)));
+
+  /* ── 초기화 ────────────────────────────────────────────────── */
+  (async () => {
+    await Promise.all([loadData('yukji'), loadData('cherry')]);
+    renderChart('yukji');             // 처음 활성 탭만 차트 렌더
+  })();
+})();
+</script>
+
+</body>
+</html>
